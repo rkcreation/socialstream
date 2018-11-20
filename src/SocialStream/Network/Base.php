@@ -103,8 +103,14 @@ abstract class Base implements BaseInterface {
         $directoryPath = Wall::$cacheDirectory;
         $filePath = $this->getCacheFilePath();
 
-        // Create non existing cache directory, then check current network cache file existence and duration
-        if ((!is_dir($directoryPath) && !mkdir($directoryPath) && !is_dir($directoryPath)) && file_exists($filePath) && (time() - filemtime($filePath)) < Wall::$cacheDuration) {
+        // Create non existing cache directory
+        if (!is_dir($directoryPath)) {
+            $directoryCreation = mkdir($directoryPath, 0755, true);
+            Helper::debug(sprintf('Cache directory %s creation status : %s', $directoryPath, $directoryCreation));
+        }
+
+        // Check current network cache file existence and duration
+        if (file_exists($filePath) && (time() - filemtime($filePath)) < Wall::$cacheDuration) {
             $data = file_get_contents($filePath);
 
             if (!empty($data)) {
