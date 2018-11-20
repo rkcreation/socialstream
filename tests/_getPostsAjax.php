@@ -1,54 +1,66 @@
 <?php
-	require_once  '../vendor/autoload.php';
-	require_once '_data.php';
+    if (!file_exists('../vendor/autoload.php') || !file_exists('_data.php')) {
+        return;
+    }
 
-    $nbPostsPerNetworks = (isset($_GET['nbPostsPerNetworks']) && !empty($_GET['nbPostsPerNetworks'])) ? $_GET['nbPostsPerNetworks'] : 48;
+    require_once  '../vendor/autoload.php';
+    require_once '_data.php';
 
-	$networks = [
+    $networksData = [
         'youtube' => [
             'account' => YOUTUBE_CHANNEL_ID,
             'credentials' => [
                 'api_key' => YOUTUBE_API_KEY
             ]
         ],
-		'facebook' => [
-			'account' => FACEBOOK_ACCOUNT_NAME,
-			'credentials' => [
-				'access_api' => FACEBOOK_ACCESS_API,
-				'access_token' => FACEBOOK_ACCESS_TOKEN
-			]
-		],
-		'twitter' => [
-			'account' => TWITTER_ACCOUNT_NAME,
-			'credentials' => [
-				'consumer_key' => TWITTER_CONSUMER_KEY,
-				'consumer_secret' => TWITTER_CONSUMER_SECRET,
-				'oauth_access_token' => TWITTER_ACCESS_TOKEN,
-				'oauth_access_token_secret' => TWITTER_ACCESS_TOKEN_SECRET
-			]
-		],
+        'facebook' => [
+            'account' => FACEBOOK_ACCOUNT_NAME,
+            'credentials' => [
+                'access_api' => FACEBOOK_ACCESS_API,
+                'access_token' => FACEBOOK_ACCESS_TOKEN
+            ]
+        ],
+        'twitter' => [
+            'account' => TWITTER_ACCOUNT_NAME,
+            'credentials' => [
+                'consumer_key' => TWITTER_CONSUMER_KEY,
+                'consumer_secret' => TWITTER_CONSUMER_SECRET,
+                'oauth_access_token' => TWITTER_ACCESS_TOKEN,
+                'oauth_access_token_secret' => TWITTER_ACCESS_TOKEN_SECRET
+            ]
+        ],
         'instagram' => [
             'account' => INSTAGRAM_ACCOUNT_NAME,
             'credentials' => [
                 'access_token' => INSTAGRAM_ACCESS_TOKEN
             ]
         ],
-	];
+    ];
 
+    // Ajax variables
+    $nbPostsPerNetworks = (isset($_GET['nbPostsPerNetworks']) && !empty($_GET['nbPostsPerNetworks'])) ? $_GET['nbPostsPerNetworks'] : 48;
+    $networkFiltered = (isset($_GET['networkFiltered']) && !empty($_GET['networkFiltered'])) ? $_GET['networkFiltered'] : null;
+
+    // SocialWall init
 	$socialWall = new \SocialStream\Wall();
 
 	$socialWall->setDebug(true);
 	$socialWall->setCacheDuration(10*60);
-	$socialWall->addNetworks($networks);
+	$socialWall->addNetworks($networksData);
 
-	$posts = $socialWall->getPosts($nbPostsPerNetworks, true);
+	if (empty($networkFiltered)) {
+        $posts = $socialWall->getPosts($nbPostsPerNetworks, true);
+    } else {
+        $nbPostsPerNetworks *= count($networksData);
+        $posts = $socialWall->getPostsFrom($networkFiltered, $nbPostsPerNetworks, true);
+    }
 ?>
 
 <?php if (!empty($posts)): ?>
 	<div class="row row--full" id="masonry-grid">
 		<?php foreach ($posts as $post): ?>
             <?php /** @var $post \SocialStream\Post */?>
-			<div class="col-sm-6 col-md-4 col-xl-3">
+			<div class="col-sm-6 col-md-4 col-xl-3 <?php echo $post->getNetwork(); ?>">
 				<div class="card mb-4 shadow-sm">
 					<div class="thumbnail">
 						<?php if ($thumbnail = $post->getThumbnailUrl()): ?>

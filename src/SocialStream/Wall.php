@@ -94,7 +94,7 @@ class Wall {
      *
      * @return mixed
      */
-    public function getPosts(int $countPostsPerNetwork = 24, bool $shuffle = false) {
+    public function getPosts(int $countPostsPerNetwork = 6, bool $shuffle = false) {
         $filteredPosts = $localPosts = [];
 
         if (!empty($this->posts)) {
@@ -123,12 +123,20 @@ class Wall {
      * List posts for a specific network
      * @param string $networkName
      * @param int $countPosts
+     * @param bool $shuffle
      *
      * @return mixed
      */
-    public function getPostsFrom(string $networkName, int $countPosts = 24) {
+    public function getPostsFrom(string $networkName, int $countPosts = 6, $shuffle = false) {
         if (isset($this->posts[$networkName]) && !empty($this->posts[$networkName])) {
-            return \array_slice($this->posts[$networkName], 0, $countPosts);
+            $posts = \array_slice($this->posts[$networkName], 0, $countPosts);
+
+            // Random order
+            if ($shuffle === true) {
+                shuffle($posts);
+            }
+
+            return $posts;
         }
 
         Helper::debug(sprintf('Network "%s" is not declared', $networkName));
@@ -165,6 +173,7 @@ class Wall {
                 }
 
                 Helper::debug(sprintf('The %s API is not responding', $networkName));
+                Helper::debug($networkClass->getApiConnectionInfo());
 
             } else {
                 Helper::debug(sprintf('Sorry, we don\'t know "%s" as network', $networkName));
