@@ -1,0 +1,30 @@
+{
+  "require": {
+    "php": ">=7.0",
+    "j7mbo/twitter-api-php": "1.0.*",
+    "ext-json": "*",
+    "ext-curl": "*",
+    "ext-mbstring": "*"
+  },
+  "name": "mathieumaingret/socialstream",
+  "description": "PHP helper to aggregate formatted social media posts from Facebook, Twitter, etc ...",
+  "type": "library",
+  "keywords": [
+    "Social Wall",
+    "PHP",
+    "API"
+  ],
+  "homepage": "https://github.com/mathieumaingret/socialstream",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Mathieu MAINGRET",
+      "homepage": "https://github.com/mathieumaingret"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+        "SocialStream\\": "src/SocialStream/"
+    }
+  }
+}
