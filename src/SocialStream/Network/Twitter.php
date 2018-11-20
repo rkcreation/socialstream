@@ -34,12 +34,7 @@ class Twitter extends Base {
      */
     public function buildApi() {
         if (class_exists('TwitterAPIExchange')) {
-            $service = new \TwitterAPIExchange([
-                'consumer_key' => TWITTER_CONSUMER_KEY,
-                'consumer_secret' => TWITTER_CONSUMER_SECRET,
-                'oauth_access_token' => TWITTER_ACCESS_TOKEN,
-                'oauth_access_token_secret' => TWITTER_ACCESS_TOKEN_SECRET,
-            ]);
+            $service = new \TwitterAPIExchange($this->getCredentials());
 
             $this->setApiConnectionInfo($service);
         }

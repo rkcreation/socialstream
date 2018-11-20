@@ -34,10 +34,14 @@ class Instagram extends Base {
     public function buildApi() {
         $credentials = $this->getCredentials();
 
-        if (isset($credentials['access_token'])) {
-            $url = 'https://api.instagram.com/v1/users/self/media/recent?access_token=' . $credentials['access_token'];
-            $this->setApiConnectionInfo($url);
-        }
+        $baseUrl = 'https://api.instagram.com/v1/users/self/media/recent';
+        $params = [
+            'access_token' => $credentials['access_token'],
+            'count' => 50
+        ];
+
+        $url = Helper::buildUrl($baseUrl, $params);
+        $this->setApiConnectionInfo($url);
     }
 
     /**
@@ -71,7 +75,11 @@ class Instagram extends Base {
         $post->setId($data->id);
         $post->setType($postType);
         $post->setUrl($data->link);
-        $post->setThumbnailUrl($data->{$postType . 's'}->standard_resolution->url);
+
+        if (property_exists($data, 'images') && property_exists($data->images, 'standard_resolution')) {
+            $post->setThumbnailUrl($data->images->standard_resolution->url);
+        }
+
         $post->setDate($data->created_time, true);
         $post->setAuthorName($data->user->full_name);
         $post->setAuthorUrl($this->networkBaseUrl . $data->user->username);

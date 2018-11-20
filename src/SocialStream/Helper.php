@@ -149,7 +149,7 @@ EOD;
      *
      * @return mixed
      */
-    public static function requestUrl(string $baseUrl, array $params) {
+    public static function buildUrl(string $baseUrl, array $params) {
         $url = $baseUrl;
         $url .= '?' . http_build_query($params, '', '&');
         $url = urldecode($url);

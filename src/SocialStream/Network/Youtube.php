@@ -40,7 +40,7 @@ class Youtube extends Base {
             'maxResults' => 50,
             'key' => $apiKey,
         ];
-        $url = Helper::requestUrl($baseUrl, $params);
+        $url = Helper::buildUrl($baseUrl, $params);
 
         $this->setApiConnectionInfo($url);
     }

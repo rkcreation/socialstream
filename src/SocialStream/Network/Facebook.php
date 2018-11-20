@@ -33,15 +33,14 @@ class Facebook extends Base {
     public function buildApi() {
         $token = implode($this->getCredentials(), '|');
 
+        $baseUrl = 'https://graph.facebook.com/' . parent::getAccountName() . '/feed';
         $params = [
             'key' => 'value',
             'access_token' => $token,
             'limit' => 50,
             'fields' => 'id,admin_creator,caption,permalink_url,message,picture,full_picture,link,name,description,type,created_time,from,object_id,story',
         ];
-
-        $baseUrl = 'https://graph.facebook.com/' . parent::getAccountName() . '/feed';
-        $url = Helper::requestUrl($baseUrl, $params);
+        $url = Helper::buildUrl($baseUrl, $params);
 
         $this->setApiConnectionInfo($url);
     }
