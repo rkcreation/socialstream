@@ -13,9 +13,7 @@ use SocialStream\Post;
 class Youtube extends Base {
 
     /**
-     * Facebook constructor.
-     *
-     * @param $info
+     * @inheritdoc
      */
     public function __construct($info) {
         $this->networkBaseUrl = 'https://www.youtube.com/';
@@ -27,7 +25,7 @@ class Youtube extends Base {
     }
 
     /**
-     *
+     * @inheritdoc
      */
     public function buildApi() {
         $baseUrl = 'https://www.googleapis.com/youtube/v3/search';
@@ -46,7 +44,7 @@ class Youtube extends Base {
     }
 
     /**
-     *
+     * @inheritdoc
      */
     public function getDataFromApi() {
         $this->buildApi();
@@ -54,7 +52,7 @@ class Youtube extends Base {
         if (!empty($this->apiConnectionInfo)) {
             $data = Helper::curl($this->apiConnectionInfo);
 
-            if (!empty($data)) {
+            if (!empty($data) && property_exists($data, 'items')) {
                 $this->sourceData = $data->items;
             }
         }
@@ -62,16 +60,10 @@ class Youtube extends Base {
 
 
     /**
-     * @param $data
-     *
-     * @return mixed|Post
+     * @inheritdoc
      */
     public function formatPost($data) {
         $post = new Post($data);
-
-//        echo '<pre>';
-//        var_dump($data->snippet);
-//        echo '</pre>';
 
         $post->setNetwork($this->getNetworkName());
 

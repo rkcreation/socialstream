@@ -11,14 +11,16 @@
             'account' => YOUTUBE_CHANNEL_ID,
             'credentials' => [
                 'api_key' => YOUTUBE_API_KEY
-            ]
+            ],
+            'settings' => []
         ],
         'facebook' => [
             'account' => FACEBOOK_ACCOUNT_NAME,
             'credentials' => [
                 'access_api' => FACEBOOK_ACCESS_API,
                 'access_token' => FACEBOOK_ACCESS_TOKEN
-            ]
+            ],
+            'settings' => []
         ],
         'twitter' => [
             'account' => TWITTER_ACCOUNT_NAME,
@@ -27,13 +29,15 @@
                 'consumer_secret' => TWITTER_CONSUMER_SECRET,
                 'oauth_access_token' => TWITTER_ACCESS_TOKEN,
                 'oauth_access_token_secret' => TWITTER_ACCESS_TOKEN_SECRET
-            ]
+            ],
+            'settings' => []
         ],
         'instagram' => [
             'account' => INSTAGRAM_ACCOUNT_NAME,
             'credentials' => [
                 'access_token' => INSTAGRAM_ACCESS_TOKEN
-            ]
+            ],
+            'settings' => []
         ],
     ];
 
@@ -46,6 +50,8 @@
 
 	$socialWall->setDebug(true);
 	$socialWall->setCacheDuration(10*60);
+    $socialWall->setBodyAsHtml(true);
+
 	$socialWall->addNetworks($networksData);
 
 	if (empty($networkFiltered)) {

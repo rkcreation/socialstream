@@ -2,7 +2,6 @@
 
 namespace SocialStream\Network;
 
-use SocialStream\Helper;
 use SocialStream\Post;
 
 /**

@@ -13,9 +13,7 @@ use SocialStream\Post;
 class Facebook extends Base {
 
     /**
-     * Facebook constructor.
-     *
-     * @param $info
+     * @inheritdoc
      */
     public function __construct($info) {
         $this->networkBaseUrl = 'https://www.facebook.com/';
@@ -28,7 +26,7 @@ class Facebook extends Base {
     }
 
     /**
-     *
+     * @inheritdoc
      */
     public function buildApi() {
         $token = implode($this->getCredentials(), '|');
@@ -46,7 +44,7 @@ class Facebook extends Base {
     }
 
     /**
-     *
+     * @inheritdoc
      */
     public function getDataFromApi() {
         $this->buildApi();
@@ -54,17 +52,14 @@ class Facebook extends Base {
         if (!empty($this->apiConnectionInfo)) {
             $data = Helper::curl($this->apiConnectionInfo);
 
-            if (!empty($data)) {
+            if (!empty($data) && property_exists($data, 'data')) {
                 $this->sourceData = $data->data;
             }
         }
     }
 
-
     /**
-     * @param $data
-     *
-     * @return mixed|\SocialStream\Post
+     * @inheritdoc
      */
     public function formatPost($data) {
         $post = new Post($data);

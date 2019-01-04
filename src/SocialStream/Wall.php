@@ -38,6 +38,13 @@ class Wall {
     public static $cacheDuration = 3600;
 
     /**
+     * Should display posts body content as html (or plain text if false)
+     *
+     * @var bool
+     */
+    public static $bodyHtml = true;
+
+    /**
      * Should displays debug info
      *
      * @var
@@ -69,13 +76,21 @@ class Wall {
     }
 
     /**
-     * Set absolute system path to cache directory. Do not include a trailing
-     * slash.
+     * Set absolute system path to cache directory. Do not include a trailing slash.
      *
      * @param null $path
      */
     public function setCacheDirectory($path) {
         self::$cacheDirectory = $path;
+    }
+
+    /**
+     * Should display posts body content as html (or plain text if false)
+     *
+     * @param bool $status
+     */
+    public function setBodyAsHtml($status = true) {
+        self::$bodyHtml = $status;
     }
 
     /**
@@ -127,7 +142,7 @@ class Wall {
      *
      * @return mixed
      */
-    public function getPostsFrom(string $networkName, int $countPosts = 6, $shuffle = false) {
+    public function getPostsFrom($networkName, $countPosts = 6, $shuffle = false) {
         if (isset($this->posts[$networkName]) && !empty($this->posts[$networkName])) {
             $posts = \array_slice($this->posts[$networkName], 0, $countPosts);
 

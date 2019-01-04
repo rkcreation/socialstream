@@ -15,9 +15,7 @@ use SocialStream\Post;
 class Instagram extends Base {
 
     /**
-     * Facebook constructor.
-     *
-     * @param $info
+     * @inheritdoc
      */
     public function __construct($info) {
         $this->networkBaseUrl = 'https://www.instagram.com/';
@@ -29,7 +27,7 @@ class Instagram extends Base {
     }
 
     /**
-     *
+     * @inheritdoc
      */
     public function buildApi() {
         $credentials = $this->getCredentials();
@@ -45,7 +43,7 @@ class Instagram extends Base {
     }
 
     /**
-     *
+     * @inheritdoc
      */
     public function getDataFromApi() {
         $this->buildApi();
@@ -53,17 +51,14 @@ class Instagram extends Base {
         if ($this->apiConnectionInfo) {
             $data = Helper::curl($this->apiConnectionInfo);
 
-            if (!empty($data)) {
+            if (!empty($data) && property_exists($data, 'data')) {
                 $this->sourceData = $data->data;
             }
         }
     }
 
-
     /**
-     * @param $data
-     *
-     * @return mixed|Post
+     * @inheritdoc
      */
     public function formatPost($data) {
         $post = new Post($data);

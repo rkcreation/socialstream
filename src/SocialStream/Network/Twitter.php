@@ -2,8 +2,8 @@
 
 namespace SocialStream\Network;
 
-use SocialStream\Helper;
 use SocialStream\Post;
+use SocialStream\Wall;
 
 /**
  * Class Twitter
@@ -13,9 +13,7 @@ use SocialStream\Post;
 class Twitter extends Base {
 
     /**
-     * Facebook constructor.
-     *
-     * @param $info
+     * @inheritdoc
      */
     public function __construct($info) {
         $this->networkBaseUrl = 'https://twitter.com/';
@@ -30,7 +28,7 @@ class Twitter extends Base {
     }
 
     /**
-     *
+     * @inheritdoc
      */
     public function buildApi() {
         if (class_exists('TwitterAPIExchange')) {
@@ -41,7 +39,7 @@ class Twitter extends Base {
     }
 
     /**
-     *
+     * @inheritdoc
      */
     public function getDataFromApi() {
         $this->buildApi();
@@ -55,7 +53,7 @@ class Twitter extends Base {
             $baseUrl = 'https://api.twitter.com/1.1/statuses/user_timeline.json';
             $paramsQuery = http_build_query($params, '', '&');
 
-            /** @var $data \TwitterAPIExchange */
+            /** @var $this->apiConnectionInfo \TwitterAPIExchange */
             $data = $this->apiConnectionInfo
                 ->setGetfield($paramsQuery)
                 ->buildOauth($baseUrl, 'GET')
@@ -71,11 +69,8 @@ class Twitter extends Base {
         }
     }
 
-
     /**
-     * @param $data
-     *
-     * @return mixed|Post
+     * @inheritdoc
      */
     public function formatPost($data) {
         $post = new Post($data);
@@ -86,11 +81,9 @@ class Twitter extends Base {
 
         if ((bool) $data->retweeted) {
             $type = 'retweet';
-        }
-        elseif ((bool) $data->is_quote_status) {
+        } elseif ((bool) $data->is_quote_status) {
             $type = 'quote';
-        }
-        else {
+        } else {
             $type = 'tweet';
         }
         $post->setType($type);
@@ -101,7 +94,11 @@ class Twitter extends Base {
         $post->setAuthorUrl($this->networkBaseUrl . $data->user->screen_name);
 
         if (property_exists($data, 'full_text')) {
-            $post->setContent($this->convertTextToHtml($data->full_text));
+            if (Wall::$bodyHtml === true) {
+                $post->setContent($this->convertTextToHtml($data->full_text));
+            } else {
+                $post->setContent($data->full_text);
+            }
         }
 
         if (property_exists($data->entities, 'media') && !empty($data->entities->media)) {
