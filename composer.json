@@ -4,9 +4,11 @@
     "j7mbo/twitter-api-php": "1.0.*",
     "ext-json": "*",
     "ext-curl": "*",
-    "ext-mbstring": "*"
+    "ext-mbstring": "*",
+    "facebook/php-business-sdk": "^12.0"
   },
-  "name": "mathieumaingret/socialstream",
+  "name": "rkcreation/socialstream",
+  "version": "1.0.0",
   "description": "PHP helper to aggregate formatted social media posts from Facebook, Twitter, etc ...",
   "type": "library",
   "keywords": [
@@ -14,17 +16,21 @@
     "PHP",
     "API"
   ],
-  "homepage": "https://github.com/mathieumaingret/socialstream",
+  "homepage": "https://github.com/rkcreation/socialstream",
   "license": "MIT",
   "authors": [
     {
       "name": "Mathieu MAINGRET",
       "homepage": "https://github.com/mathieumaingret"
+    },
+    {
+      "name": "Nicolas Dhers",
+      "homepage": "https://github.com/rkcreation"
     }
   ],
   "autoload": {
     "psr-4": {
-        "SocialStream\\": "src/SocialStream/"
+      "SocialStream\\": "src/SocialStream/"
     }
   }
 }

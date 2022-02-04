@@ -8,7 +8,7 @@ PHP helper to aggregate formatted social media posts from Facebook, Twitter, etc
 
 All you need is PHP (easy part, let's say >= 5.6) and developer accounts for Facebook and/or Twitter.
 
-**Facebook** (*https://developers.facebook.com/*)
+**Facebook / Instagram** (*https://developers.facebook.com/*)
 
 * ACCESS_API
 * ACCESS_TOKEN
@@ -127,4 +127,5 @@ $media = new \SocialStream\Media\MyNewSocialMedia();
 
 ## Built With
 
-* [Twitter-api-php](http://github.com/j7mbo/twitter-api-php) - The simplest PHP Wrapper for Twitter API v1.1 calls
+* [j7mbo/twitter-api-php](https://github.com/j7mbo/twitter-api-php) - The simplest PHP Wrapper for Twitter API v1.1 calls
+* [facebook/php-business-sdk](https://developers.facebook.com/docs/business-sdk/getting-started#php) - The Facebook SDK (for FB / Instagram)
